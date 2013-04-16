@@ -27,7 +27,7 @@ public class SqlToJson {
 	 * @param args
 	 */	
 	public static void main(String[] args) {
-		System.out.println("Start mapping...");
+		System.out.println("Start mapping....");
 		startTime = System.currentTimeMillis();		
 		writeQueue = new LinkedBlockingQueue<Map<Integer, List<Object>>>();
 		reader = new ObjectMapper();
