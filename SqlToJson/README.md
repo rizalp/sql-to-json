@@ -56,8 +56,7 @@ You know from the samples that Joined Table have a lot of duplicate values. How 
 * Deeper Nested Nodes
 
 
-## License 
-
+## License
 Copyright 2013 Mohammad Shahrizal Prabowo
 
    Licensed under the Apache License, Version 2.0 (the "License");
