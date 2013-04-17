@@ -321,7 +321,7 @@ public class WriteJSON extends Thread {
 				flushTree();
 				synchronized (this) {
 					if(writeQueue.isEmpty()){
-						this.wait(1000);//wait a second if queue is empty
+						this.wait(400);//wait 400ms if queue is empty
 					}
 				}
 				
