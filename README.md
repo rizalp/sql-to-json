@@ -44,20 +44,17 @@ You know from the samples that Joined Table have a lot of duplicate values. How 
 
 ## Versioning
 #### Latest Release v0.1
-
 * Currently only support one level of nested nodes
 *
 *
 
 ## To Do
-
 * More output stream choices
 * Other DBMS support
 * Deeper Nested Nodes
 
 
 ## License 
-
 Copyright 2013 Mohammad Shahrizal Prabowo
 
    Licensed under the Apache License, Version 2.0 (the "License");
