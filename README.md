@@ -11,15 +11,18 @@ This is tools to convert SQL Query result into JSON file. Implemented using JDBC
 
 ## Examples
 [Employees](http://dev.mysql.com/doc/employee/en/index.html) sample database
-[employees sample database schema](http://dev.mysql.com/doc/employee/en/images/employees-schema.png)
+![employees sample database schema](http://dev.mysql.com/doc/employee/en/images/employees-schema.png)
 
-Suppose we would like to convert this schema into Self-Contained Json for employee no 110386. On the config.json, modify the query field: 
+Suppose we would like to convert this schema into Self-Contained Json for employee no 110386. On the config.json, modify the query field:
 
-`"query" : "Select * FROM employees e left join titles t on e.emp_no = t.emp_no left join salaries s on e.emp_no = s.emp_no left join dept_emp de on de.emp_no = e.emp_no left join departments d on d.dept_no = de.dept_no left join dept_manager dm on dm.emp_no = e.emp_no where e.emp_no = 110386"`
+    "query" : "Select * FROM employees e left join titles t on e.emp_no = t.emp_no left join salaries s on e.emp_no = s.emp_no
+    left join dept_emp de on de.emp_no = e.emp_no left join departments d on d.dept_no = de.dept_no left join dept_manager dm on
+    dm.emp_no = e.emp_no where e.emp_no = 110386"
 
-This query will left join all tables for employee no 110386 using emp_no field. ResultSet [Output](https://docs.google.com/file/d/0B2o1vMJ7XFKyS2JjMGM5NHVHR2c/edit?usp=sharing) 
+This query will left join all tables for employee no 110386 using emp_no field. ResultSet [Output](https://docs.google.com/file/d/0B2o1vMJ7XFKyS2JjMGM5NHVHR2c/edit?usp=sharing)
 
-JSOIN Output : 
+JSON Output :
+
     {
       "results" : [ {
         "emp_no" : 110386,
@@ -119,11 +122,11 @@ JSOIN Output :
 ## Background Theory
 1. The returned result from executed query is modelled using Object Exchange model (OEM). Read more info about the underlying model (here)[http://www.dcs.bbk.ac.uk/~ptw/teaching/ssd/toc.html]
 2. The OEM will implemented using Map data structure, with column number as its keys, and List of Objects as its value
-3. Mapping SQl Types into Java Types is done by following [Oracle guidelines](http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/mapping.html) 
+3. Mapping SQl Types into Java Types is done by following [Oracle guidelines](http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/mapping.html)
 4. JSON Parser and Generator are provided by [Jackson](http://wiki.fasterxml.com/JacksonHome)
 
-## Important 
-* If you write query that joined tables, you should modify subnodes. Otherwise, multiple values will be written as Arrays. On the previous examples, salaries field will be written as: 
+## Important
+* If you write query that joined tables, you should modify subnodes. Otherwise, multiple values will be written as Arrays. On the previous examples, salaries field will be written as:
 
     "salary" : [40000, 42536, 45922, 47117, 47794, 51381, 53926, 56028, 56528, 56530, 59960, 61207, 64392, 66995],
     "from_date" : [1988-10-14, 1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12, 1999-10-12, 2000-10-11, 2001-10-11],
@@ -135,13 +138,13 @@ JSOIN Output :
 * If your ResultSet contain multiple occurance of DocRoot (perhaps as FK), this tool is clever enough to ignore it.
 
 ## Limitations
-* Data types limitations: 
-    * If you have column that use LONGVARCHAR to store multi-megabyte strings. It can be unwieldy 
+* Data types limitations:
+    * If you have column that use LONGVARCHAR to store multi-megabyte strings. It can be unwieldy
 	* SQL Types ARRAY, BLOB, DISTINCT, CLOB, STRUCT, REF, and JAVA_OBJECT is ignored
 * Currently only support one level of nested nodes.
 
 ## Implementation Notes
-Since it's possible that results set is quite large, and the OEM Tree can't be fitted all in the memory, we'll be using Producer - Consumer Design Pattern approach. The producer is OEMTree object, that will read the ResultSet, build the tree, and put it into the queue. The consumer is WriteJSON object that will retrieve the value from queue, perform necessary cleaning, and write it into the JSON file. 
+Since it's possible that results set is quite large, and the OEM Tree can't be fitted all in the memory, we'll be using Producer - Consumer Design Pattern approach. The producer is OEMTree object, that will read the ResultSet, build the tree, and put it into the queue. The consumer is WriteJSON object that will retrieve the value from queue, perform necessary cleaning, and write it into the JSON file.
 
 The queue implementation is [LinkedBlockingQueue](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/LinkedBlockingQueue.html), which is recommended for this type of problems. If the queue is empty, the consumer will wait 400ms before consuming the queue again.
 
@@ -155,7 +158,7 @@ You know from the samples that Joined Table have a lot of duplicate values. How 
 * Other DBMS support
 * Recursive Nodes
 
-## License 
+## License
 Copyright 2013 Mohammad Shahrizal Prabowo
 
    Licensed under the Apache License, Version 2.0 (the "License");
