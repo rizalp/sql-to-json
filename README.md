@@ -120,7 +120,7 @@ JSON Output :
 
 
 ## Background Theory
-1. The returned result from executed query is modelled using Object Exchange model (OEM). Read more info about the underlying model (here)[http://www.dcs.bbk.ac.uk/~ptw/teaching/ssd/toc.html]
+1. The returned result from executed query is modelled using Object Exchange model (OEM). Read more info about the underlying model [here](http://www.dcs.bbk.ac.uk/~ptw/teaching/ssd/toc.html)
 2. The OEM will implemented using Map data structure, with column number as its keys, and List of Objects as its value
 3. Mapping SQl Types into Java Types is done by following [Oracle guidelines](http://docs.oracle.com/javase/6/docs/technotes/guides/jdbc/getstart/mapping.html)
 4. JSON Parser and Generator are provided by [Jackson](http://wiki.fasterxml.com/JacksonHome)
@@ -129,8 +129,10 @@ JSON Output :
 * If you write query that joined tables, you should modify subnodes. Otherwise, multiple values will be written as Arrays. On the previous examples, salaries field will be written as:
 
     "salary" : [40000, 42536, 45922, 47117, 47794, 51381, 53926, 56028, 56528, 56530, 59960, 61207, 64392, 66995],
-    "from_date" : [1988-10-14, 1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12, 1999-10-12, 2000-10-11, 2001-10-11],
-    "to_date" : [1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12, 1999-10-12, 2000-10-11, 2001-10-11, 9999-01-01]
+    "from_date" : [1988-10-14, 1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12,
+    1998-10-12, 1999-10-12, 2000-10-11, 2001-10-11],
+    "to_date" : [1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12,
+    1999-10-12, 2000-10-11, 2001-10-11, 9999-01-01]
 
 * Beware of the same collumn name between different table!. While JSON allow us to write duplicate field, only the last one will be used by other programs that consume the JSON. This probably isn't what you want
 * If you use alias in your query, make sure the first column's alias is the same as docRoot
@@ -149,6 +151,7 @@ Since it's possible that results set is quite large, and the OEM Tree can't be f
 The queue implementation is [LinkedBlockingQueue](http://docs.oracle.com/javase/6/docs/api/java/util/concurrent/LinkedBlockingQueue.html), which is recommended for this type of problems. If the queue is empty, the consumer will wait 400ms before consuming the queue again.
 
 You know from the samples that Joined Table have a lot of duplicate values. How did this tools map it up into clean, self-contained JSON?
+
 1. Get Primary key for each collumn, and find its location in the ResultSet
 2. Since Joined table have alot of duplicate / null value, we need to add a bit more cleaning before adding it to the branch. We'll use each collumn PK information to define wheter this cell's data is unique or not.
 3. Finally, before writting OEM into JSON, we'll delete the duplicate by finding the minimum occurance of duplicate value in the branch. Then, cut the branch using sublist(0, branch.size()/duplicates)
