@@ -3,3 +3,6 @@ bin
 sql-to-json.iml
 .idea/
 target/
+.settings/
+.project
+.classpath

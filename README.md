@@ -128,11 +128,13 @@ JSON Output :
 ## Important
 * If you write query that joined tables, you should modify subnodes. Otherwise, multiple values will be written as Arrays. On the previous examples, salaries field will be written as:
 
+
     "salary" : [40000, 42536, 45922, 47117, 47794, 51381, 53926, 56028, 56528, 56530, 59960, 61207, 64392, 66995],
     "from_date" : [1988-10-14, 1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12,
     1998-10-12, 1999-10-12, 2000-10-11, 2001-10-11],
     "to_date" : [1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12,
     1999-10-12, 2000-10-11, 2001-10-11, 9999-01-01]
+
 
 * Beware of the same collumn name between different table!. While JSON allow us to write duplicate field, only the last one will be used by other programs that consume the JSON. This probably isn't what you want
 * If you use alias in your query, make sure the first column's alias is the same as docRoot
