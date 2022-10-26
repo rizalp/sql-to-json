@@ -1,7 +1,7 @@
 # SqlToJson
 #### Mapping SQL Query result into JSON
 
-This is a tool to convert SQL Query results into JSON file. Implemented using JDBC and currently only supports MySQL.
+This is tools to convert SQL Query result into JSON file. Implemented using JDBC and Currently only support MySQL, altough other DBMS is planned soon.
 
 ## Usage
 1. Import this project into Eclipse
@@ -135,20 +135,17 @@ JSON Output :
     "to_date" : [1989-10-14, 1990-10-14, 1991-10-14, 1992-10-13, 1993-10-13, 1994-10-13, 1995-10-13, 1996-10-12, 1997-10-12, 1998-10-12,
     1999-10-12, 2000-10-11, 2001-10-11, 9999-01-01]
 
-* The subnode startColumn and endColumn should correspond to the first and last column of each table in the combined view
-* Beware of the same column name between different table!. While JSON allow us to write duplicate field, only the last one will be used by other programs that consume the JSON. This probably isn't what you want
+
+* Beware of the same collumn name between different table!. While JSON allow us to write duplicate field, only the last one will be used by other programs that consume the JSON. This probably isn't what you want
 * If you use alias in your query, make sure the first column's alias is the same as docRoot
 * You *should* use alias if you joined table
-* If your ResultSet contain multiple occurrence of DocRoot (perhaps as FK), this tool is clever enough to ignore it.
+* If your ResultSet contain multiple occurance of DocRoot (perhaps as FK), this tool is clever enough to ignore it.
 
 ## Limitations
 * Data types limitations:
     * If you have column that use LONGVARCHAR to store multi-megabyte strings. It can be unwieldy
 	* SQL Types ARRAY, BLOB, DISTINCT, CLOB, STRUCT, REF, and JAVA_OBJECT is ignored
 * Currently only support one level of nested nodes.
-* There is an issue if the join clause field for one of the tables is not the same as the others
-* The join clause field should be the first column in each table
-* You can only exclude the join clause field, so the startColumn of one subNode should only be +2 more than the endColumn of the previous subNode
 
 ## Implementation Notes
 Since it's possible that results set is quite large, and the OEM Tree can't be fitted all in the memory, we'll be using Producer - Consumer Design Pattern approach. The producer is OEMTree object, that will read the ResultSet, build the tree, and put it into the queue. The consumer is WriteJSON object that will retrieve the value from queue, perform necessary cleaning, and write it into the JSON file.
@@ -157,9 +154,9 @@ The queue implementation is [LinkedBlockingQueue](http://docs.oracle.com/javase/
 
 You know from the samples that Joined Table have a lot of duplicate values. How did this tools map it up into clean, self-contained JSON?
 
-1. Get Primary key for each column, and find its location in the ResultSet
-2. Since Joined table have a lot of duplicate / null value, we need to add a bit more cleaning before adding it to the branch. We'll use each column PK information to define whether this cell's data is unique or not.
-3. Finally, before witting OEM into JSON, we'll delete the duplicate by finding the minimum occurrence of duplicate value in the branch. Then, cut the branch using sublist(0, branch.size()/duplicates)
+1. Get Primary key for each collumn, and find its location in the ResultSet
+2. Since Joined table have alot of duplicate / null value, we need to add a bit more cleaning before adding it to the branch. We'll use each collumn PK information to define wheter this cell's data is unique or not.
+3. Finally, before writting OEM into JSON, we'll delete the duplicate by finding the minimum occurance of duplicate value in the branch. Then, cut the branch using sublist(0, branch.size()/duplicates)
 
 ## To Do
 * More output stream choices

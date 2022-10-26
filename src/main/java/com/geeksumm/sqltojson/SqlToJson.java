@@ -2,13 +2,13 @@ package com.geeksumm.sqltojson;
 /**
  * 
  */
-
+import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -34,7 +34,7 @@ public class SqlToJson {
 		DBHelper database = null;
 		
 		try {
-			config = reader.readValue(ClassLoader.getSystemClassLoader().getResourceAsStream("json/config.json"), Config.class);
+			config = reader.readValue(new File("json/config.json"), Config.class);
 			database = new DBHelper(config);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -47,7 +47,7 @@ public class SqlToJson {
 			System.exit(1);
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("File Not Found. Exiting..");
+			System.out.println("File Not Found. Exitting..");
 			System.exit(1);
 			e.printStackTrace();
 		}

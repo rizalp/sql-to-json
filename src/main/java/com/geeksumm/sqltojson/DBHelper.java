@@ -49,7 +49,7 @@ public class DBHelper {
 		switch (config.getJdbcDriver().toString()) {
 			case "mysql":
 			case "mariadb":
-				JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
+				JDBC_DRIVER = "com.mysql.jdbc.Driver";
 				url = "jdbc:mysql://";
 				break;
 			case "postgresql":
